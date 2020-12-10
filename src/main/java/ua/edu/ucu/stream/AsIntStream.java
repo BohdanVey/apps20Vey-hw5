@@ -8,16 +8,6 @@ import java.util.List;
 public class AsIntStream implements IntStream {
     List<Integer> elementsList = new ArrayList<>();
 
-    public boolean hasNext(int now) {
-        return now + 1 < elementsList.size();
-    }
-
-    public Integer getNext(int now) {
-        if (hasNext(now))
-            return elementsList.get(now + 1);
-        throw new IllegalArgumentException("Array out of boundaries");
-    }
-
     private AsIntStream(List<Integer> lst) {
         elementsList = lst;
     }
@@ -26,6 +16,16 @@ public class AsIntStream implements IntStream {
         for (Integer element : values) {
             elementsList.add(element);
         }
+    }
+
+    public boolean hasNext(int now) {
+        return now + 1 < elementsList.size();
+    }
+
+    public Integer getNext(int now) {
+        if (hasNext(now))
+            return elementsList.get(now + 1);
+        throw new IllegalArgumentException("Array out of boundaries");
     }
 
     public static IntStream of(int... values) {
@@ -91,16 +91,16 @@ public class AsIntStream implements IntStream {
 
     @Override
     public IntStream filter(IntPredicate predicate) {
-        List<Integer> elementsList = new ArrayList<>();
+        List<Integer> elements = new ArrayList<>();
         int now = -1;
         while (hasNext(now)) {
             int x = getNext(now);
             if (predicate.test(x)) {
-                elementsList.add(x);
+                elements.add(x);
             }
             now += 1;
         }
-        return new AsIntStream(elementsList);
+        return new AsIntStream(elements);
     }
 
 
@@ -148,7 +148,8 @@ public class AsIntStream implements IntStream {
     public int reduce(int identity, IntBinaryOperator op) {
         int now = -1;
         while (hasNext(now)) {
-            identity = op.apply(identity, getNext(now));
+            int x = op.apply(identity, getNext(now));
+            identity = x;
             now += 1;
         }
         return identity;
