@@ -23,10 +23,8 @@ public class AsIntStream implements IntStream {
     }
 
     public Integer getNext(int now) {
-        if (hasNext(now)) {
-            return elementsList.get(now + 1);
-        }
-        throw new IllegalArgumentException("Array out of boundaries");
+        return elementsList.get(now + 1);
+
     }
 
     public static IntStream of(int... values) {
@@ -51,7 +49,7 @@ public class AsIntStream implements IntStream {
 
     private Integer findMinMax(int multiplier) {
         isEmptyError();
-        Integer now = getNext(-1);
+        Integer now = multiplier * getNext(-1);
         int index = 0;
         while (hasNext(index)) {
             int value = getNext(index);
