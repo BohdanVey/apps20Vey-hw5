@@ -7,6 +7,8 @@ import java.util.List;
 
 public class AsIntStream implements IntStream {
     private List<Integer> elementsList = new ArrayList<>();
+    public AsIntStream() {
+    }
 
     private AsIntStream(List<Integer> lst) {
         elementsList = lst;

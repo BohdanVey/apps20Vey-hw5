@@ -52,4 +52,16 @@ public class StreamAppTest {
         assertEquals(1, res2);
     }
 
+    @Test
+    public void testStreamAverage() {
+        double res = intStream.map(x -> x * x).average();
+        assertEquals(3.0, res, 0.0);
+        assertEquals(intStream.count(), 5);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testStreamEmpty(){
+        AsIntStream emptyList = new AsIntStream();
+        emptyList.sum();
+    }
 }
