@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AsIntStream implements IntStream {
-    List<Integer> elementsList = new ArrayList<>();
+    private List<Integer> elementsList = new ArrayList<>();
 
     private AsIntStream(List<Integer> lst) {
         elementsList = lst;
@@ -23,8 +23,9 @@ public class AsIntStream implements IntStream {
     }
 
     public Integer getNext(int now) {
-        if (hasNext(now))
+        if (hasNext(now)) {
             return elementsList.get(now + 1);
+        }
         throw new IllegalArgumentException("Array out of boundaries");
     }
 
@@ -106,7 +107,7 @@ public class AsIntStream implements IntStream {
 
     @Override
     public AsIntStream forEach(IntConsumer action) {
-        int arr[] = new int[size()];
+        int []arr = new int[size()];
         int now = -1;
         while (hasNext(now)) {
             arr[now + 1] = getNext(now);
@@ -134,10 +135,10 @@ public class AsIntStream implements IntStream {
 
         while (hasNext(now)) {
             IntStream arr = func.applyAsIntStream(getNext(now));
-            int now2 = -1;
-            while (arr.hasNext(now2)) {
-                elements.add(arr.getNext(now2));
-                now2++;
+            int nowSecond = -1;
+            while (arr.hasNext(nowSecond)) {
+                elements.add(arr.getNext(nowSecond));
+                nowSecond++;
             }
             now++;
         }
@@ -157,7 +158,7 @@ public class AsIntStream implements IntStream {
 
     @Override
     public int[] toArray() {
-        int arr[] = new int[size()];
+        int []arr = new int[size()];
         int now = -1;
         while (hasNext(now)) {
             arr[now + 1] = getNext(now);
